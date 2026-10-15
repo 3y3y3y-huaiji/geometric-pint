@@ -1,8 +1,11 @@
 # Geometric Parallel-in-Time (PinT) Decoupling
 
+**English** | [简体中文](README_CN.md)
+
 [![Lean 4](https://img.shields.io/badge/Lean%204-v4.33.1-blue.svg)](https://leanprover.github.io/)
 [![Formal Verification](https://img.shields.io/badge/verified%20by-Mathlib4-green.svg)](https://github.com/leanprover-community/mathlib4)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE-Apache-2.0.txt)
+[![License: Mulan PSL v2](https://img.shields.io/badge/License-Mulan%20PSL%20v2-red.svg)](LICENSE-MulanPSL-2.0.txt)
 
 > **Breaking the $O(N)$ Serial Recurrence Bottleneck via Space-Time Spectral Lattice Decoupling in Lean 4.**
 
@@ -52,6 +55,10 @@ lake env lean GeometricPinT/Basic.lean
 
 ---
 
-## 📜 License
+## 📜 License & Dual Licensing
 
-Licensed under the [Apache 2.0 License](LICENSE).
+This project is dual-licensed under:
+* [Apache License, Version 2.0](LICENSE-Apache-2.0.txt)
+* [Mulan Permissive Software License, Version 2 (木兰宽松许可证 第2版)](LICENSE-MulanPSL-2.0.txt)
+
+See [LICENSE](LICENSE) for details.
