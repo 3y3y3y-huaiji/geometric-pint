@@ -1,0 +1,86 @@
+name: Lean 4 CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  style:
+    name: Lint Style & Naming
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Verify line length (<= 100) and style
+        run: |
+          echo "Checking line length <= 100 on all .lean files..."
+          FAILED=0
+          for file in $(find GeometricPinT -name "*.lean"); do
+            while IFS= read -r line; do
+              if [ ${#line} -gt 100 ]; then
+                echo "Error: Line exceeds 100 chars in $file: $line"
+                FAILED=1
+              fi
+            done < "$file"
+          done
+          if [ $FAILED -ne 0 ]; then
+            exit 1
+          fi
+          echo "All Lean files conform to line length <= 100!"
+
+  build:
+    name: Build & Verify
+    runs-on: ubuntu-latest
+    needs: style
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install elan
+        run: |
+          curl -sSfL --retry 5 --retry-connrefused https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o elan-init.sh
+          sh elan-init.sh -y --default-toolchain none
+          rm elan-init.sh
+          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+
+      - name: Verify Lean & Lake Toolchain
+        run: |
+          lean --version
+          lake --version
+
+      - name: Fetch Mathlib Cloud Cache
+        run: lake exe cache get
+
+      - name: Lake Build
+        run: |
+          lake build -KwarningAsError=true
+
+      - name: Strict Verification of Modules
+        run: |
+          lake env lean -D warningAsError=true GeometricPinT/Basic.lean
+
+      - name: Kernel Axioms Verification (#print axioms)
+        run: |
+          cat << 'EOF' > check_axioms.lean
+          import GeometricPinT.Basic
+
+          #print axioms GeometricPinT.spaceTime_soundness
+          #print axioms GeometricPinT.spaceTime_uniqueness
+          EOF
+          OUTPUT=$(lake env lean check_axioms.lean)
+          echo "Axioms check output:"
+          echo "$OUTPUT"
+          if echo "$OUTPUT" | grep -q "sorryAx"; then
+            echo "Error: Proof depends on sorryAx"
+            exit 1
+          fi
+          echo "All kernel axioms verified without sorryAx!"

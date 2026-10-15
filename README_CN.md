@@ -3,6 +3,7 @@
 [English](README.md) | **简体中文**
 
 [![Lean 4](https://img.shields.io/badge/Lean%204-v4.33.1-blue.svg)](https://leanprover.github.io/)
+[![Lean 4 CI 流水线](https://github.com/3y3y3y-huaiji/geometric-pint/actions/workflows/ci.yml/badge.svg)](https://github.com/3y3y3y-huaiji/geometric-pint/actions/workflows/ci.yml)
 [![形式化验证](https://img.shields.io/badge/形式化验证-Mathlib4-green.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE-Apache-2.0.txt)
 [![License: Mulan PSL v2](https://img.shields.io/badge/License-木兰宽松%20v2-red.svg)](LICENSE-MulanPSL-2.0.txt)
